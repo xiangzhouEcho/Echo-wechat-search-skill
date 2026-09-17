@@ -22,9 +22,14 @@ description: Use when searching WeChat Official Account (微信公众号) articl
 - 高频/大批量抓取 —— 搜狗按 IP 反爬，超量会触发验证码（antispider）
 - 阅读数/评论等数据
 
+## Requirements
+
+- **uv** 必须已安装（用来运行脚本并自动装 Python 依赖）。
+- **仅 `--download` 需要**已安装 [echo-wechat-skill](https://github.com/xiangzhouEcho/Echo-wechat-skill)（本机应位于 `~/.claude/skills/echo-wechat-skill`）；未安装时 `--download` 会打印明确错误并跳过下载，搜索/解析/`--json` 不受影响。
+
 ## Quick Start
 
-**执行位置（重要）**：在你希望下载产物落地的目录运行，用脚本**绝对路径**调用；不要 `cd` 进 skill 目录。本机脚本绝对路径为 `~/.claude/skills/echo-wechat-search-skill/scripts/wechat_search.py`。依赖由 uv 自动安装。
+**执行位置（重要）**：在你希望下载产物落地的目录运行，用脚本**绝对路径**调用；不要 `cd` 进 skill 目录。本机脚本绝对路径为 `~/.claude/skills/echo-wechat-search-skill/scripts/wechat_search.py`。
 
 ```bash
 SEARCH=~/.claude/skills/echo-wechat-search-skill/scripts/wechat_search.py
@@ -37,6 +42,9 @@ uv run "$SEARCH" "量子计算" --resolve --json
 
 # 搜到就下：解析真实链接并用 echo-wechat-skill 存成 markdown
 uv run "$SEARCH" "海洋科学" --download --limit 5 --format md
+
+# 限定最近一周
+uv run "$SEARCH" "台风" --time week
 ```
 
 `--download` 会隐式启用解析，把解析成功的文章交给 echo-wechat-skill 下载。
@@ -49,9 +57,9 @@ uv run "$SEARCH" "海洋科学" --download --limit 5 --format md
 | `--time` | 时间范围 `day`/`week`/`month`/`year` | 不限 |
 | `--resolve` | 尽力把搜狗链接解析成真实文章链接 | 关 |
 | `--download` | 解析后调 echo-wechat-skill 下载（隐含 --resolve） | 关 |
-| `--format` | 下载格式，传给 wechat-skill：`md,html,pdf` | md |
+| `--format` | 下载格式，**逗号分隔可多选**（如 `md,html,pdf` 同时出三种） | md |
 | `--out DIR` | 下载输出目录 | ./wechat-download |
-| `--limit N` | 最多解析/下载多少条 | 5 |
+| `--limit N` | 最多**解析/下载**多少条（对纯搜索的列表长度无效）；解析被限速时实际下载可能少于此数 | 5 |
 | `--delay S` | 请求间隔秒数 | 3 |
 | `--json` | 以 JSON 输出结果 | 关（人类可读） |
 
