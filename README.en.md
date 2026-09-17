@@ -74,6 +74,14 @@ Inside an agent, just say "search WeChat articles about X and download them".
 uv run ~/.claude/skills/echo-wechat-search-skill/scripts/selftest.py   # offline
 ```
 
+## Echo WeChat Skill Family
+
+Three skills form a pipeline: **search → download → format & publish**.
+
+- [Echo-wechat-search-skill](https://github.com/xiangzhouEcho/Echo-wechat-search-skill) — search Official-Account articles by keyword, pipe straight to download · this repo
+- [Echo-wechat-skill](https://github.com/xiangzhouEcho/Echo-wechat-skill) — download articles without a certificate (single/album/batch; md/html/pdf + images/video/audio)
+- [Echo-md2wechat-skill](https://github.com/xiangzhouEcho/Echo-md2wechat-skill) — format & publish Markdown to WeChat (inline CSS + clipboard + draft API)
+
 ## License
 
 MIT © xiangzhouEcho
